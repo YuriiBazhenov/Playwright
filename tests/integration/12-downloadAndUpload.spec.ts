@@ -26,7 +26,7 @@ test.describe('Download & Upload', () => {
     })
 
 
-    test.only('Upload a File', async ({ page }) => {
+    test('Upload a File', async ({ page }) => {
         const uploadLink = page.locator('#file_upload')
         const uploadPath = 'downloads/SampleText.txt'
 
