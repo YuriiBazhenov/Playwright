@@ -90,7 +90,7 @@ test.describe('Playwright locators', () => {
         await page.getByPlaceholder('Enter text here').highlight()
     })
 
-    test.only('Playwright - filter() locator API', async ({ page}) => {
+    test('Playwright - filter() locator API', async ({ page}) => {
 
         await page.goto('https://techglobal-training.com/frontend')
 
