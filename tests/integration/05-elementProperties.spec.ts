@@ -1,15 +1,14 @@
-import { test } from "@playwright/test";
-import { clickLink } from "./helpers/clickHelpers";
+import { test } from '@playwright/test'
+import { clickLink } from '../../helpers/clickHelpers'
 
-test.describe("Element Properties", () => {
+test.describe('Element Properties', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("https://techglobal-training.com/frontend");
+    await page.goto('https://techglobal-training.com/frontend')
 
-    await clickLink(page, "Html Elements");
-  });
+    await clickLink(page, 'Html Elements')
+  })
 
-  test('Getting Element Properties', async ( { page }) => {
-
+  test('Getting Element Properties', async ({ page }) => {
     const headings = page.locator('[data-identifier="Headings"]')
 
     // will always return an array
@@ -31,12 +30,11 @@ test.describe("Element Properties", () => {
 
     const innerElements = headings.locator('h4')
 
-    console.log(await innerElements.count() + ' count of web elements')
+    console.log((await innerElements.count()) + ' count of web elements')
 
     const attr = await headings.getAttribute('data-identifier')
 
     console.log(attr)
-
 
     const companyDropdown = page.locator('#company_dropdown1')
 
@@ -44,24 +42,20 @@ test.describe("Element Properties", () => {
     await companyDropdown.selectOption({ index: 1 })
 
     console.log(await companyDropdown.inputValue())
-
   })
 
   test('Executing JavaScript code in Playwright', async ({ page }) => {
-
     // get page title
     const result = await page.evaluate(() => {
-
-        // JavaScript code to be executed in the browser context
-        return document.title
+      // JavaScript code to be executed in the browser context
+      return document.title
     })
 
     console.log(result)
 
     const href = await page.evaluate(() => {
-
-        // JavaScript code to be executed in the browser context
-        return document.location.href
+      // JavaScript code to be executed in the browser context
+      return document.location.href
     })
 
     console.log(href)
@@ -69,7 +63,7 @@ test.describe("Element Properties", () => {
     const element = page.locator('#main_heading')
 
     const backgroundColor = await element.evaluate((el) => {
-        return window.getComputedStyle(el).getPropertyValue('color')
+      return window.getComputedStyle(el).getPropertyValue('color')
     })
 
     console.log(backgroundColor)
@@ -78,13 +72,12 @@ test.describe("Element Properties", () => {
     const y = 20
 
     const getResult = await page.evaluate(
-        ([a, b]) => {
-            return a + b
-        },
-        [x, y]
+      ([a, b]) => {
+        return a + b
+      },
+      [x, y],
     )
 
     console.log(getResult)
-
   })
-});
+})

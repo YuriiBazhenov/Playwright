@@ -1,121 +1,111 @@
-import test, { expect } from "@playwright/test";
-
+import test, { expect } from '@playwright/test'
 
 test.describe('Playwright locators', () => {
+  test('Playwright Locator API', async ({ page }) => {
+    await page.goto('https://techglobal-training.com')
 
-    test('Playwright Locator API', async ({ page }) => {
+    const myLogo = page.locator('#logo')
 
-        await page.goto('https://techglobal-training.com')
+    await myLogo.click()
 
-        const myLogo = page.locator('#logo')
+    /**
+     * Note:
+     * Locator API in Playwright is a generic API that can be used to locate any element on the page
+     * it can be used to locate elements using different locators strategies like CSS, and XPARH
+     */
+  })
 
-        await myLogo.click()
+  test('Playwright - Custom Psuedo Classes', async ({ page }) => {
+    await page.goto('https://techglobal-training.com/frontend')
 
-        /**
-         * Note:
-         * Locator API in Playwright is a generic API that can be used to locate any element on the page
-         * it can be used to locate elements using different locators strategies like CSS, and XPARH
-         */
-    })
+    await page.locator('a', { hasText: 'Html Elements' }).click()
+    // await page.locator('a:has-text("Html Elements")').click()
 
-    test('Playwright - Custom Psuedo Classes', async ({ page }) => {
+    // These locates the given elements by their text using :text() or :has-text()
+    await page.locator('button:text("Register")').highlight()
+    await page.locator('button:has-text("Sign in"):visible').highlight()
 
-        await page.goto('https://techglobal-training.com/frontend')
+    // locates the element in the div with id '#apple_check'
+    await page.locator('#radio-button-group:has(#java_radio)').highlight()
+    // await page.locator('div', { has: page.locator('#apple_check')}).highlight()
+  })
 
-        await page.locator('a', { hasText: 'Html Elements' }).click()
-        // await page.locator('a:has-text("Html Elements")').click()
+  test('Playwright - chaining locators', async ({ page }) => {
+    await page.goto('https://techglobal-training.com/frontend')
 
-        // These locates the given elements by their text using :text() or :has-text()
-        await page.locator('button:text("Register")').highlight()
-        await page.locator('button:has-text("Sign in"):visible').highlight()
+    await page.locator('a', { hasText: 'Html Elements' }).click()
 
-        // locates the element in the div with id '#apple_check'
-        await page.locator('#radio-button-group:has(#java_radio)').highlight()
-        // await page.locator('div', { has: page.locator('#apple_check')}).highlight()
-    })
+    const unorderedList = page.locator('#unordered_list')
 
-    test('Playwright - chaining locators', async ({ page }) => {
-        await page.goto('https://techglobal-training.com/frontend')
+    const getText = await unorderedList.locator('li:has-text("JavaScript")').textContent()
 
-        await page.locator('a', { hasText: 'Html Elements' }).click()
+    console.log(getText + ' name of element')
+  })
 
-        const unorderedList = page.locator('#unordered_list')
+  test('Playwright - handling multiple elements', async ({ page }) => {
+    await page.goto('https://techglobal-training.com/frontend')
 
-        const getText = await unorderedList.locator('li:has-text("JavaScript")').textContent()
+    await page.locator('a', { hasText: 'Html Elements' }).click()
 
-        console.log(getText + ' name of element')
-    })
+    const unorderedList = page.locator('#unordered_list > li')
 
-    test('Playwright - handling multiple elements', async ({ page }) => {
+    await unorderedList.first().click()
+    await unorderedList.last().click()
+    await unorderedList.nth(1).click()
 
-        await page.goto('https://techglobal-training.com/frontend')
+    const checkBoxGroup = page.locator('#checkbox-button-group input')
+    const checkboxCount = await checkBoxGroup.count()
 
-        await page.locator('a', { hasText: 'Html Elements' }).click()
+    for (let i = 0; i < checkboxCount; i++) {
+      await checkBoxGroup.nth(i).click()
+    }
 
-        const unorderedList = page.locator('#unordered_list > li')
+    const checkBoxGroup2 = page.locator('#checkbox-button-group input').all()
 
-        await unorderedList.first().click()
-        await unorderedList.last().click()
-        await unorderedList.nth(1).click()
+    for (const checkBox of await checkBoxGroup2) {
+      await checkBox.click()
+    }
 
-        const checkBoxGroup = page.locator('#checkbox-button-group input')
-        const checkboxCount = await checkBoxGroup.count();
+    // await Promise.all(
+    //     (await checkBoxGroup2).map( async (element, index) => {
+    //         await element.click()
+    //         console.log(index)
+    //     })
+    // )
+  })
 
-        for(let i = 0; i < checkboxCount; i++){
-            await checkBoxGroup.nth(i).click()
-        }
+  test('Playwright built-in locators', async ({ page }) => {
+    await page.goto('https://techglobal-training.com/frontend')
 
-        const checkBoxGroup2 = page.locator('#checkbox-button-group input').all()
+    await page.getByRole('link', { name: 'Html Elements' }).click()
 
-        for( const checkBox of await checkBoxGroup2) {
-            await checkBox.click()
-        }
+    await page.getByRole('heading', { name: 'Unordered List' }).highlight()
 
-        // await Promise.all(
-        //     (await checkBoxGroup2).map( async (element, index) => {
-        //         await element.click()
-        //         console.log(index)
-        //     })
-        // )
+    await page.getByPlaceholder('Enter text here').highlight()
+  })
 
-    })
+  test('Playwright - filter() locator API', async ({ page }) => {
+    await page.goto('https://techglobal-training.com/frontend')
 
-    test('Playwright built-in locators', async ({ page }) => {
-        await page.goto('https://techglobal-training.com/frontend')
+    await page.getByRole('link', { name: 'Html Elements' }).click()
 
-        await page.getByRole('link', { name: 'Html Elements' }).click()
+    const testingParagraphs = page.locator('p').filter({ hasText: 'testing' })
 
-        await page.getByRole('heading', { name: 'Unordered List'}).highlight()
+    const text = await testingParagraphs.textContent()
 
-        await page.getByPlaceholder('Enter text here').highlight()
-    })
+    console.log(`Text of the first paragraph: ${text}`)
 
-    test('Playwright - filter() locator API', async ({ page}) => {
+    const nonLanguageheadings = page.locator('label').filter({ hasNotText: 'Java' })
+    const count = await nonLanguageheadings.count()
 
-        await page.goto('https://techglobal-training.com/frontend')
+    console.log(`Numbers of elements that has not text Java is: ${count}`)
 
-        await page.getByRole('link', { name: 'Html Elements' }).click()
+    const textOfDiv = page.locator('div').filter({ has: page.locator('h3:has-text("Headings")') })
 
-        const testingParagraphs = page.locator('p').filter({ hasText: 'testing'})
+    const headingItems = await textOfDiv.locator('h4').all()
 
-        const text = await testingParagraphs.textContent()
-
-        console.log(`Text of the first paragraph: ${text}`)
-
-        const nonLanguageheadings = page.locator('label').filter({hasNotText: 'Java'})
-        const count = await nonLanguageheadings.count()
-
-        console.log(`Numbers of elements that has not text Java is: ${count}`)
-
-        const textOfDiv = page.locator('div').filter({ has: page.locator('h3:has-text("Headings")') })
-
-        const headingItems = await textOfDiv.locator('h4').all()
-
-        for( const heading of headingItems) {
-            console.log(await heading.textContent())
-        }
-
-    })
-
-
+    for (const heading of headingItems) {
+      console.log(await heading.textContent())
+    }
+  })
 })

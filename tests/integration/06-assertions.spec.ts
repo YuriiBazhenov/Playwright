@@ -1,14 +1,12 @@
+import { test, expect } from '@playwright/test'
+import { clickLink } from '../../helpers/clickHelpers'
 
-import { test, expect } from "@playwright/test";
-import { clickLink } from "./helpers/clickHelpers";
-
-
-test.describe("Assertions", () => {
+test.describe('Assertions', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("https://techglobal-training.com/frontend");
+    await page.goto('https://techglobal-training.com/frontend')
 
-    await clickLink(page, "Html Elements");
-  });
+    await clickLink(page, 'Html Elements')
+  })
 
   test('Auto-retry, web-first async locator assertions', async ({ page }) => {
     const mainHeading = page.locator('#main_heading')
@@ -41,7 +39,6 @@ test.describe("Assertions", () => {
 
     const textInput = page.locator('#text_input1')
 
-
     await expect(textInput).toBeEmpty()
 
     await textInput.fill('TechGlobal')
@@ -60,7 +57,6 @@ test.describe("Assertions", () => {
   })
 
   test('Non-retry Assertions', async () => {
-
     const num = 1
 
     expect(num).toBe(1)
@@ -75,10 +71,9 @@ test.describe("Assertions", () => {
   })
 
   test('Creating custom assertion', async ({ page }) => {
+    await page.goto('https://techglobal-training.com/frontend')
 
-    await page.goto("https://techglobal-training.com/frontend");
-
-    await clickLink(page, "Infinite Scroll");
+    await clickLink(page, 'Infinite Scroll')
 
     const articles = page.locator('.infinite-scroll-component > div')
     const articlesCount = await articles.count()
@@ -89,18 +84,16 @@ test.describe("Assertions", () => {
 
     const newCount = await articles.count()
 
-
     await expect(async () => {
-        const newCount = await articles.count()
-        console.log('Trying here!' + newCount)
-        expect(newCount).toBeGreaterThan(articlesCount)
+      const newCount = await articles.count()
+      console.log('Trying here!' + newCount)
+      expect(newCount).toBeGreaterThan(articlesCount)
     }).toPass({
-        timeout: 3000,
+      timeout: 3000,
     })
   })
 
-
-  test('Soft Assertions', async({ page }) => {
+  test('Soft Assertions', async ({ page }) => {
     const mainHeading = page.locator('#main_heading')
 
     // Flaky Assertion here - means; sometime fails, sometime passes. So it's inconsistent.
@@ -108,11 +101,10 @@ test.describe("Assertions", () => {
 
     const checkBoxGroup2 = await page.locator('#checkbox-button-group input').all()
 
-    for(const check of checkBoxGroup2) {
-        await check.check()
-        console.log('Chechked')
-        await expect(check).toBeChecked()
+    for (const check of checkBoxGroup2) {
+      await check.check()
+      console.log('Chechked')
+      await expect(check).toBeChecked()
     }
-
   })
 })

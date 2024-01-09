@@ -1,88 +1,82 @@
-
-
-import { test } from "@playwright/test";
-import { clickLink,clickButton } from "./helpers/clickHelpers";
+import { test } from '@playwright/test'
+import { clickLink, clickButton } from '../../helpers/clickHelpers'
 
 test.describe('User Actions', () => {
   test.beforeEach(async ({ page }) => {
-      await page.goto("https://techglobal-training.com/frontend");
-  
-      await clickLink(page, "Html Elements");
-    });
+    await page.goto('https://techglobal-training.com/frontend')
 
-    test('User Actions - Click and Hover', async ( { page  }) => {
-      const dropdownButton = page.locator('#dropdown-button')
+    await clickLink(page, 'Html Elements')
+  })
 
-      await dropdownButton.hover()
+  test('User Actions - Click and Hover', async ({ page }) => {
+    const dropdownButton = page.locator('#dropdown-button')
 
-      await clickButton(page, 'Register')
-    })
+    await dropdownButton.hover()
 
-    test('User Actions - Type', async ({ page }) => {
-      const textInput1  = page.locator('#text_input1')
-      
-      console.log(await page.viewportSize())
-      // Normally it would type "CypressPlaywright"
-      await textInput1.fill('Cypress')
-      await textInput1.fill('Playwright')
-    })
+    await clickButton(page, 'Register')
+  })
 
-    test('User Actions - Checkbox and Radio Buttons', async ({ page }) => {
+  test('User Actions - Type', async ({ page }) => {
+    const textInput1 = page.locator('#text_input1')
 
-      const apple = page.getByRole('checkbox', { name: 'Apple' })
-      const microsoft = page.getByRole('checkbox', { name: 'Microsoft' })
-      const tesla = page.getByRole('checkbox', { name: 'Tesla' })
+    console.log(await page.viewportSize())
+    // Normally it would type "CypressPlaywright"
+    await textInput1.fill('Cypress')
+    await textInput1.fill('Playwright')
+  })
 
-      await apple.check()
-      await apple.uncheck()
+  test('User Actions - Checkbox and Radio Buttons', async ({ page }) => {
+    const apple = page.getByRole('checkbox', { name: 'Apple' })
+    const microsoft = page.getByRole('checkbox', { name: 'Microsoft' })
+    const tesla = page.getByRole('checkbox', { name: 'Tesla' })
 
-      // const checkBoxGroup = page.locator('#checkbox-button-group input')
+    await apple.check()
+    await apple.uncheck()
 
-      // const checkboxCount = await checkBoxGroup.count();
+    // const checkBoxGroup = page.locator('#checkbox-button-group input')
 
-      // for(let i = 0; i < checkboxCount; i++){
-      //     await checkBoxGroup.nth(i).check()
-      //     await checkBoxGroup.nth(i).uncheck()
-      // }
+    // const checkboxCount = await checkBoxGroup.count();
 
-      const checkBoxGroup2 = await page.locator('#checkbox-button-group input').all()
+    // for(let i = 0; i < checkboxCount; i++){
+    //     await checkBoxGroup.nth(i).check()
+    //     await checkBoxGroup.nth(i).uncheck()
+    // }
 
-      for(const check of checkBoxGroup2) {
-          await check.check()
-          await check.uncheck()
-      }
+    const checkBoxGroup2 = await page.locator('#checkbox-button-group input').all()
 
-      // checkBoxGroup2.forEach( async (el) => {
-      //     await el.check()
-      //     await el.uncheck()
-      // })
-    })
+    for (const check of checkBoxGroup2) {
+      await check.check()
+      await check.uncheck()
+    }
 
-    test('User Actions - Dropdowns', async ({ page }) => {
-      const companyDropdown = page.locator('#company_dropdown1')
+    // checkBoxGroup2.forEach( async (el) => {
+    //     await el.check()
+    //     await el.uncheck()
+    // })
+  })
 
-      // Select the option with the index of 1
-      await companyDropdown.selectOption({ index: 1 })
+  test('User Actions - Dropdowns', async ({ page }) => {
+    const companyDropdown = page.locator('#company_dropdown1')
 
-      // Select the option with the text
-      await companyDropdown.selectOption({ label: 'Apple' })
+    // Select the option with the index of 1
+    await companyDropdown.selectOption({ index: 1 })
 
-      // Select the option with the value attribute
-      await companyDropdown.selectOption({ value: 'Tesla' })
-    })
-    
-    test('User Actions - Calendar/Date Picker', async ({ page }) => {
+    // Select the option with the text
+    await companyDropdown.selectOption({ label: 'Apple' })
 
-      const date1 = page.locator('#date_input1')
-      const date2 = page.locator('#date_input2')
+    // Select the option with the value attribute
+    await companyDropdown.selectOption({ value: 'Tesla' })
+  })
 
-      await date1.fill('01/01/2000')
-      await page.keyboard.press('Enter')
+  test('User Actions - Calendar/Date Picker', async ({ page }) => {
+    const date1 = page.locator('#date_input1')
+    const date2 = page.locator('#date_input2')
 
-      // await date2.clear()
-      await date2.fill('01/01/2005')
-      await page.keyboard.press('Enter')
-    })
+    await date1.fill('01/01/2000')
+    await page.keyboard.press('Enter')
+
+    // await date2.clear()
+    await date2.fill('01/01/2005')
+    await page.keyboard.press('Enter')
+  })
 })
-
-

@@ -1,15 +1,14 @@
-import { test,expect } from "@playwright/test";
-import { clickLink } from "./helpers/clickHelpers";
+import { test, expect } from '@playwright/test'
+import { clickLink } from '../../helpers/clickHelpers'
 
-test.describe("Interacting Multiple tabs", async () => {
+test.describe('Interacting Multiple tabs', async () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("https://techglobal-training.com/frontend");
+    await page.goto('https://techglobal-training.com/frontend')
 
-    await clickLink(page, "Multiple Windows");
-  });
+    await clickLink(page, 'Multiple Windows')
+  })
 
   test('Creating a new tab', async ({ page, context }) => {
-
     // Use the existing 'page' to navigate to a URL in the new tab
     // const newTab = await page.context().newPage()
     const newTab = await context.newPage()
@@ -25,26 +24,17 @@ test.describe("Interacting Multiple tabs", async () => {
   })
 
   test('Interacting/switching new tab', async ({ page }) => {
-       
-    const [newTab] = await Promise.all([
-        page.waitForEvent('popup'),
-        clickLink(page, 'Apple')
-    ])
-
+    const [newTab] = await Promise.all([page.waitForEvent('popup'), clickLink(page, 'Apple')])
 
     await expect(newTab).toHaveTitle('Apple')
 
     const numbers = [1, 2, 3]
-    const [first, second ] = numbers
+    const [first, second] = numbers
 
     console.log(first)
     console.log(second)
 
-    const [newTab2] = await Promise.all([
-        page.waitForEvent('popup'),
-        clickLink(page, 'Microsoft')
-    ])
-
+    const [newTab2] = await Promise.all([page.waitForEvent('popup'), clickLink(page, 'Microsoft')])
 
     await expect(newTab2).toHaveURL('https://www.microsoft.com/en-us/')
   })
@@ -58,17 +48,13 @@ test.describe("Interacting Multiple tabs", async () => {
    */
 
   test('Test case', async ({ page }) => {
-
     const links = ['Apple', 'Microsoft', 'Tesla']
 
     for (const link of links) {
-        const [newTab] = await Promise.all([
-            page.waitForEvent('popup'),
-            clickLink(page, link)
-        ])
+      const [newTab] = await Promise.all([page.waitForEvent('popup'), clickLink(page, link)])
 
-        expect(newTab.url()).toContain(link.toLowerCase())
-        await newTab.close()
+      expect(newTab.url()).toContain(link.toLowerCase())
+      await newTab.close()
     }
   })
 })

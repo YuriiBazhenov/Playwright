@@ -1,14 +1,12 @@
-import { test,expect } from "@playwright/test";
-import { clickButton, clickLink } from "./helpers/clickHelpers";
+import { test, expect } from '@playwright/test'
+import { clickLink } from '../../helpers/clickHelpers'
 
-
-
-test.describe("Annotations", () => {
+test.describe('Annotations', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("https://techglobal-training.com/frontend");
+    await page.goto('https://techglobal-training.com/frontend')
 
-    await clickLink(page, "Html Elements");
-  });
+    await clickLink(page, 'Html Elements')
+  })
 
   // test('Annotations - fail', async ({ page }) => {
   //     test.fail()
@@ -25,13 +23,12 @@ test.describe("Annotations", () => {
   // })
 
   test.fixme('Annotations - slow', async ({ page }) => {
+    // this will triple the timeout for this test
+    test.slow()
 
-      // this will triple the timeout for this test
-      test.slow()
+    const heading = page.locator('#main_heading')
 
-      const heading = page.locator('#main_heading')
-
-      await expect(heading).toHaveText('Html Elements')
+    await expect(heading).toHaveText('Html Elements')
   })
 
   /**
@@ -48,23 +45,25 @@ test.describe("Annotations", () => {
     console.log(testInfo.error)
 
     await test.step('1. Go to "https://techglobal-training.com/frontend"', async () => {
-        await page.goto("https://techglobal-training.com/frontend");
-        console.log(testInfo.title)
+      await page.goto('https://techglobal-training.com/frontend')
+      console.log(testInfo.title)
     })
 
     await test.step('2. Click on the "Html Elements" card', async () => {
-        await clickLink(page, "Html Elements");
+      await clickLink(page, 'Html Elements')
     })
 
     await test.step('4. Validate Hello World and I Like automation testing! texts are visible', async () => {
-        for(const paragraph of paragraphs){
-            await expect(paragraph).toBeVisible()
-        }
+      for (const paragraph of paragraphs) {
+        await expect(paragraph).toBeVisible()
+      }
     })
 
     await test.step('5. Validate their texts are equal to expected texts', async () => {
-        await expect(page.locator('[data-identifier="Paragraphs"] > p')).toHaveText(['Hello World!','I like automation testing!'])
+      await expect(page.locator('[data-identifier="Paragraphs"] > p')).toHaveText([
+        'Hello World!',
+        'I like automation testing!',
+      ])
     })
-
   })
-});
+})

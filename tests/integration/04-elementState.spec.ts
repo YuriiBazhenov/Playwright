@@ -1,40 +1,40 @@
-import { test } from "@playwright/test";
+import { test } from '@playwright/test'
 
-import { clickLink } from "./helpers/clickHelpers";
+import { clickLink } from '../../helpers/clickHelpers'
 
 test.describe('Element State', () => {
-    test.beforeEach(async ({ page }) => {
-        await page.goto("https://techglobal-training.com/frontend");
-    
-        await clickLink(page, "Html Elements");
-      });
+  test.beforeEach(async ({ page }) => {
+    await page.goto('https://techglobal-training.com/frontend')
 
-    test('Getting Element State', async ({ page }) => {
-        const registerButton = page.getByRole('button', { name: 'Register' })
-        const signInButton = page.getByRole('button', { name: 'Sign in' })
-        const buttonMessage = page.locator('.mt-1')
+    await clickLink(page, 'Html Elements')
+  })
 
-        const registerButtonState = await registerButton.isEnabled()
-        const isMessageVisible = await buttonMessage.isVisible()
+  test('Getting Element State', async ({ page }) => {
+    const registerButton = page.getByRole('button', { name: 'Register' })
+    const signInButton = page.getByRole('button', { name: 'Sign in' })
+    const buttonMessage = page.locator('.mt-1')
 
-        // Playwright automatically will check the element state, this is just for demonstration purposes
-        isMessageVisible ? await signInButton.click() : await registerButton.click()
-    })
+    const registerButtonState = await registerButton.isEnabled()
+    const isMessageVisible = await buttonMessage.isVisible()
 
-    test('Getting Element State -  Checkbox and Radio Buttons', async ({ page }) => {
-        const apple = page.getByRole('checkbox', { name: 'Apple' })
-        const microsoft = page.getByRole('checkbox', { name: 'Microsoft' })
-        const tesla = page.locator('#checkbox_3')
+    // Playwright automatically will check the element state, this is just for demonstration purposes
+    isMessageVisible ? await signInButton.click() : await registerButton.click()
+  })
 
-        await apple.check()
+  test('Getting Element State -  Checkbox and Radio Buttons', async ({ page }) => {
+    const apple = page.getByRole('checkbox', { name: 'Apple' })
+    const microsoft = page.getByRole('checkbox', { name: 'Microsoft' })
+    const tesla = page.locator('#checkbox_3')
 
-        const isAppleChecked = await apple.isChecked()
+    await apple.check()
 
-        if(isAppleChecked) {
-            await microsoft.check()
-            await tesla.check()
-        } else {
-            await apple.check()
-        }
-    })
+    const isAppleChecked = await apple.isChecked()
+
+    if (isAppleChecked) {
+      await microsoft.check()
+      await tesla.check()
+    } else {
+      await apple.check()
+    }
+  })
 })

@@ -1,57 +1,54 @@
-import { test, expect } from "playwright/test";
-
+import { test, expect } from 'playwright/test'
 
 test.describe('First test suide', () => {
-    
-    test('Refresh, navigate back and forward', async ({page}) => {
-        // Navigate to URL
-        await page.goto('https://techglobal-training.com')
+  test('Refresh, navigate back and forward', async ({ page }) => {
+    // Navigate to URL
+    await page.goto('https://techglobal-training.com')
 
-        // Refresh the page
-        await page.reload()
+    // Refresh the page
+    await page.reload()
 
-        await page.goto('https://techglobal-training.com/frontend')
+    await page.goto('https://techglobal-training.com/frontend')
 
-        // Navigate back
-        await page.goBack()
+    // Navigate back
+    await page.goBack()
 
-        // Navigate Forward
-        await page.goForward()
-    })
+    // Navigate Forward
+    await page.goForward()
+  })
 
-    test('Validate page Title', async ({ page }) => {
-        await page.goto('https://techglobal-training.com')
+  test('Validate page Title', async ({ page }) => {
+    await page.goto('https://techglobal-training.com')
 
-        const title = await page.title()
+    const title = await page.title()
 
-        // 1st way to assert Title
-        // expect(title).toBe('TechGlobal Training | Home')
+    // 1st way to assert Title
+    // expect(title).toBe('TechGlobal Training | Home')
 
-        // 2nd way to assert Title
-        await expect(page).toHaveTitle('TechGlobal Training | Home', { timeout: 20000 })
-    })
+    // 2nd way to assert Title
+    await expect(page).toHaveTitle('TechGlobal Training | Home', { timeout: 20000 })
+  })
 
-    test('Validate page URL', async ({ page }) => {
-        await page.goto('https://techglobal-training.com')
+  test('Validate page URL', async ({ page }) => {
+    await page.goto('https://techglobal-training.com')
 
-        const title = page.url()
+    const title = page.url()
 
-        // 1st way to assert Title
-        // expect(title).toBe('https://techglobal-training.com')
+    // 1st way to assert Title
+    // expect(title).toBe('https://techglobal-training.com')
 
-        // 2nd way to assert Title
-        await expect(page).toHaveURL('https://techglobal-training.com', { timeout: 20000 })
-    })
+    // 2nd way to assert Title
+    await expect(page).toHaveURL('https://techglobal-training.com', { timeout: 20000 })
+  })
 
-    test('My First Test', async ({ page }) => {
+  test('My First Test', async ({ page }) => {
+    await page.goto('https://techglobal-training.com')
 
-        await page.goto('https://techglobal-training.com')
+    const myLogo = page.locator('#logo')
 
-        const myLogo = page.locator('#logo')
+    await myLogo.click()
 
-        await myLogo.click()
-
-        // validate logo is visible
-        await expect(myLogo).toBeVisible() 
-    })
+    // validate logo is visible
+    await expect(myLogo).toBeVisible()
+  })
 })
